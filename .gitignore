@@ -1,0 +1,25 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+
+# Virtual environments
+venv/
+env/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Model files & checkpoints (كبيرة جدًا، هتترفع على Hugging Face Hub بدل كده)
+saved_models/
+*.safetensors
+*.bin
+*.pt
+*.pth
+
+# Data (كبيرة، وممكن تتحمل تلقائيًا من load_dataset)
+data/*.csv
+data/*.parquet
+
+# Config secrets (لو أضفت أي API tokens بعدين)
+.env
