@@ -5,6 +5,12 @@ from src.utils.data_preprocessing import get_tokenizer , preprocess_data , get_d
 from src.models.bart_model import load_bart_model
 from src.eval.rouge_eval import compute_metrics_fn
 import torch
+from kaggle_secrets import UserSecretsClient
+from huggingface_hub import login
+
+hf_token = UserSecretsClient().get_secret("HF_TOKEN")
+login(token=hf_token)
+
 
 config = load_config("configs/bart.yaml")
 
@@ -62,7 +68,9 @@ training_args = Seq2SeqTrainingArguments(
     report_to = config["report_to"] ,
     metric_for_best_model= config["metric_for_best_model"],
     greater_is_better= config["greater_is_better"] ,
-    load_best_model_at_end= config["load_best_model_at_end"]
+    load_best_model_at_end= config["load_best_model_at_end"],
+    hub_model_id=config["hub_model_id"],
+    push_to_hub=True,
 
 )
 
@@ -90,5 +98,4 @@ print(f"Training complete. Final model saved to: {final_model_dir}")
 print(train_result)
 
 
-push_to_hub=True,
-hub_model_id="yoeel/bart-cnn-summarizer",
+   
