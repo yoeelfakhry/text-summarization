@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Python
 __pycache__/
 *.pyc
@@ -17,9 +18,9 @@ saved_models/
 *.pt
 *.pth
 
-# Data (كبيرة، وممكن تتحمل تلقائيًا من load_dataset)
+# Data 
 data/*.csv
 data/*.parquet
 
-# Config secrets (لو أضفت أي API tokens بعدين)
+# Config secrets 
 .env
