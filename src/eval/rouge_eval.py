@@ -24,6 +24,11 @@ def compute_metrics_fn(tokenizer):
         """
         predictions,labels = eval_pred 
 
+        print("DEBUG predictions type:", type(predictions))
+        if isinstance(predictions, tuple):
+            print("DEBUG predictions is tuple, length:", len(predictions))
+            predictions = predictions[0]
+
         predictions = np.where(predictions != -100 , predictions , tokenizer.pad_token_id)
         labels = np.where(labels != -100 , labels , tokenizer.pad_token_id)
 

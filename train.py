@@ -74,6 +74,11 @@ training_args = Seq2SeqTrainingArguments(
 
 )
 
+print("=== DEBUG ===")
+print("predict_with_generate:", training_args.predict_with_generate, type(training_args.predict_with_generate))
+print("metric_for_best_model:", training_args.metric_for_best_model)
+print("=============")
+
 # Build trainer 
 trainer = Seq2SeqTrainer(
     model= model ,
