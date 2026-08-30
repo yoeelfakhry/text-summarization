@@ -12,7 +12,7 @@ hf_token = UserSecretsClient().get_secret("HF_TOKEN")
 login(token=hf_token)
 
 
-config = load_config("configs/bart_test.yaml")
+config = load_config("configs/bart.yaml")
 
 # Load the dataset
 dataset = load_dataset("abisee/cnn_dailymail", "3.0.0")
