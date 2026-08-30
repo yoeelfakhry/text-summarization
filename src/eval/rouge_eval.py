@@ -22,6 +22,7 @@ def compute_metrics_fn(tokenizer):
         Returns:
         dict: A dictionary containing the ROUGE scores for the predicted summaries against the reference summaries 
         """
+        print(">>> compute_metrics WAS CALLED <<<")
         predictions,labels = eval_pred 
 
         print("DEBUG predictions type:", type(predictions))

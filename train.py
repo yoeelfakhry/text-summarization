@@ -71,8 +71,9 @@ training_args = Seq2SeqTrainingArguments(
     load_best_model_at_end= config["load_best_model_at_end"],
     hub_model_id=config["hub_model_id"],
     push_to_hub=True,
+    eval_accumulation_steps=config["eval_accumulation_steps"],
 
-)
+)   
 
 print("=== DEBUG ===")
 print("predict_with_generate:", training_args.predict_with_generate, type(training_args.predict_with_generate))
