@@ -104,44 +104,24 @@ print(f"Training complete. Final model saved to: {final_model_dir}")
 print(train_result)
 
 
-import evaluate
-import numpy as np
+from rouge_score import rouge_scorer
 
+test_sample = dataset["test"].select(range(100))
+scorer = rouge_scorer.RougeScorer(['rouge1', 'rouge2', 'rougeL'], use_stemmer=True)
 
-def compute_metrics_fn(tokenizer):
-    """
-    Create a function to compute the ROUGE score for the predicted summaries against the reference summaries.
-    Args:
-        tokenizer: The tokenizer object for the specified model 
-    Returns:
-        function: A function that takes in a tuple of predicted summaries and reference summaries and returns a dictionary containing the ROUGE scores for the predicted summaries against the reference summaries
-    """
+rouge1_scores, rouge2_scores, rougeL_scores = [], [], []
 
-    rouge_score  = evaluate.load("rouge")
+for example in test_sample:
+    inputs = tokenizer(example["article"], return_tensors="pt", truncation=True, max_length=config["max_input_length"]).to(model.device)
+    summary_ids = model.generate(**inputs, max_length=config["max_output_length"], num_beams=4, no_repeat_ngram_size=3)
+    generated = tokenizer.decode(summary_ids[0], skip_special_tokens=True)
+    reference = example["highlights"]
 
-    def compute_metrics(eval_pred):
-        """
-        Compute the ROUGE score for the predicted summaries against the reference summaries.
-        
-        Args:
-        eval_pred (tuple): A tuple containing the predicted summaries and the reference summaries
-        Returns:
-        dict: A dictionary containing the ROUGE scores for the predicted summaries against the reference summaries 
-        """
-        print(">>> compute_metrics WAS CALLED <<<")
-        predictions,labels = eval_pred 
+    scores = scorer.score(reference, generated)
+    rouge1_scores.append(scores["rouge1"].fmeasure)
+    rouge2_scores.append(scores["rouge2"].fmeasure)
+    rougeL_scores.append(scores["rougeL"].fmeasure)
 
-        print("DEBUG predictions type:", type(predictions))
-        if isinstance(predictions, tuple):
-            print("DEBUG predictions is tuple, length:", len(predictions))
-            predictions = predictions[0]
-
-        predictions = np.where(predictions != -100 , predictions , tokenizer.pad_token_id)
-        labels = np.where(labels != -100 , labels , tokenizer.pad_token_id)
-
-        decoded_preds = tokenizer.batch_decode(predictions, skip_special_tokens=True)
-        decoded_labels = tokenizer.batch_decode(labels, skip_special_tokens=True)
-
-        result = rouge_score.compute(predictions=decoded_preds, references=decoded_labels, use_stemmer=True)
-
-        return { k: v*100 for k , v in result.items()}  
+print(f"Final ROUGE-1 avg: {np.mean(rouge1_scores):.4f}")
+print(f"Final ROUGE-2 avg: {np.mean(rouge2_scores):.4f}")
+print(f"Final ROUGE-L avg: {np.mean(rougeL_scores):.4f}")
