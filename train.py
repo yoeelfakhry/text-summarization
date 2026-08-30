@@ -44,7 +44,7 @@ model = load_bart_model(config["model_checkpoint"])
 data_collator = get_data_collator(model, tokenizer)
 
 # Define the compute_metrics function for evaluation
-compute_metrics = compute_metrics_fn(tokenizer)
+# compute_metrics = compute_metrics_fn(tokenizer)
 
 
 # Define the training arguments
