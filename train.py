@@ -7,6 +7,8 @@ from src.models.bart_model import load_bart_model
 import torch
 from kaggle_secrets import UserSecretsClient
 from huggingface_hub import login
+from rouge_score import rouge_scorer
+import numpy as np 
 
 hf_token = UserSecretsClient().get_secret("HF_TOKEN")
 login(token=hf_token)
@@ -104,7 +106,6 @@ print(f"Training complete. Final model saved to: {final_model_dir}")
 print(train_result)
 
 
-from rouge_score import rouge_scorer
 
 test_sample = dataset["test"].select(range(100))
 scorer = rouge_scorer.RougeScorer(['rouge1', 'rouge2', 'rougeL'], use_stemmer=True)
