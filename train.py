@@ -66,9 +66,9 @@ training_args = Seq2SeqTrainingArguments(
     predict_with_generate=config["predict_with_generate"],
     fp16= config["fp16"],
     report_to = config["report_to"] ,
-    metric_for_best_model= config["metric_for_best_model"],
-    greater_is_better= config["greater_is_better"] ,
-    load_best_model_at_end= config["load_best_model_at_end"],
+    # metric_for_best_model= config["metric_for_best_model"],
+    # greater_is_better= config["greater_is_better"] ,
+    # load_best_model_at_end= config["load_best_model_at_end"],
     hub_model_id=config["hub_model_id"],
     push_to_hub=True,
     eval_accumulation_steps=config["eval_accumulation_steps"],
@@ -87,7 +87,7 @@ trainer = Seq2SeqTrainer(
     train_dataset=tokenized_train,
     eval_dataset=tokenized_val,
     data_collator=data_collator,
-    compute_metrics=compute_metrics,
+    # compute_metrics=compute_metrics,
     processing_class=tokenizer,
 
 )
