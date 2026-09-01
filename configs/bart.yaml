@@ -2,8 +2,8 @@ model_checkpoint                 : "facebook/bart-base"
 max_input_length                 : 1024
 max_output_length                : 128
 learning_rate                    : 5e-5
-num_train_epochs                 : 1
-train_size                       : 180000
+num_train_epochs                 : 3
+train_size                       : 20000
 validation_size                  : 1000
 output_dir                       : '/kaggle/working/bart-cnn-summerizer-full'
 per_device_train_batch_size      : 4
