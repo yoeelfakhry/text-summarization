@@ -5,7 +5,7 @@ from src.utils.data_preprocessing import get_tokenizer
 from src.models.pegasus import load_pegasus_model, get_pegasus_tokenizer
 
 # Load the two model one the app start 
-BART_PATH = "yoeel/bart-cnn-summarizer"  # name of the model in Hugging Face Hub
+BART_PATH = "yoeel/bart-cnn-summarizer-20k-3ep"  # name of the model in Hugging Face Hub
 bart_tokenizer = get_tokenizer(BART_PATH)
 bart_model = load_bart_model(BART_PATH)
 
