@@ -2,4 +2,5 @@ transformers>=4.44,<4.50
 torch
 streamlit
 tiktoken
+sentencepiece
 
