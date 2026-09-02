@@ -1,6 +1,6 @@
 import time
 import streamlit as st
-from inference import summarize_with_bart, summarize_with_pegasus
+from inference import summarize_with_bart
 
 st.set_page_config(
     page_title="Text Summarizer — BART vs. Pegasus",
@@ -208,46 +208,22 @@ if generate:
     if not article_text or not article_text.strip():
         st.warning("Please enter or select some article text first.")
     else:
-        col1, col2 = st.columns(2)
+        with st.spinner("Running BART..."):
+            start = time.perf_counter()
+            bart_summary = summarize_with_bart(article_text, max_length=max_length, num_beams=num_beams)
+            bart_time = time.perf_counter() - start
 
-        with col1:
-            with st.spinner("Running BART..."):
-                start = time.perf_counter()
-                bart_summary = summarize_with_bart(article_text, max_length=max_length, num_beams=num_beams)
-                bart_time = time.perf_counter() - start
-
-            st.markdown(
-                f"""
-                <div class="model-card bart">
-                    <div class="model-label bart">BART · FINE-TUNED</div>
-                    <div class="model-desc">bart-base, 20k CNN/DailyMail examples, 3 epochs</div>
-                    <div class="summary-text">{bart_summary}</div>
-                    <div class="metrics-row">
-                        <div>WORDS <span class="value">{len(bart_summary.split())}</span></div>
-                        <div>TIME <span class="value">{bart_time:.2f}s</span></div>
-                    </div>
+        st.markdown(
+            f"""
+            <div class="model-card bart">
+                <div class="model-label bart">BART · FINE-TUNED</div>
+                <div class="model-desc">bart-base, 20k CNN/DailyMail examples, 3 epochs</div>
+                <div class="summary-text">{bart_summary}</div>
+                <div class="metrics-row">
+                    <div>WORDS <span class="value">{len(bart_summary.split())}</span></div>
+                    <div>TIME <span class="value">{bart_time:.2f}s</span></div>
                 </div>
-                """,
-                unsafe_allow_html=True,
-            )
-
-        with col2:
-            with st.spinner("Running Pegasus..."):
-                start = time.perf_counter()
-                pegasus_summary = summarize_with_pegasus(article_text, max_length=max_length, num_beams=num_beams)
-                pegasus_time = time.perf_counter() - start
-
-            st.markdown(
-                f"""
-                <div class="model-card pegasus">
-                    <div class="model-label pegasus">PEGASUS · ZERO-SHOT</div>
-                    <div class="model-desc">pretrained for summarization, full-dataset fine-tune (Google)</div>
-                    <div class="summary-text">{pegasus_summary}</div>
-                    <div class="metrics-row">
-                        <div>WORDS <span class="value">{len(pegasus_summary.split())}</span></div>
-                        <div>TIME <span class="value">{pegasus_time:.2f}s</span></div>
-                    </div>
-                </div>
-                """,
-                unsafe_allow_html=True,
-            )
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
