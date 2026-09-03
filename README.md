@@ -111,21 +111,6 @@ After four isolated experiments (one variable changed at a time), I deliberately
 - **Multi-GPU (Kaggle T4 x2)** changes effective batch size and step counts vs. single-GPU runs — required recalculating training-time estimates from empirical throughput rather than reusing single-GPU numbers.
 - **Dataset repo migration** (`cnn_dailymail` → `abisee/cnn_dailymail`) mid-project — a reminder that hardcoded dataset paths are a real, recurring maintenance risk.
 
----
-
-## How to Run
-
-```bash
-python train.py        # reads all hyperparameters from configs/bart.yaml
-streamlit run app.py    # launches the local UI
-```
-```python
-from inference import summarize_with_bart
-summarize_with_bart("Article text...")
-```
-Requires a Hugging Face `HF_TOKEN` (write access) for Hub checkpointing during training, provided via secrets/env — never hardcoded.
-
----
 
 ## Tech Stack
 
