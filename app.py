@@ -131,8 +131,7 @@ with st.sidebar:
         """
         <div style="font-size:0.8rem; color:#8B92A0; line-height:1.6;">
         BART-base was fine-tuned by me on CNN/DailyMail
-        (20k examples, 3 epochs). Pegasus runs zero-shot —
-        pretrained by Google specifically for summarization.
+        (20k examples, 3 epochs). 
         <br><br>
         Full training log, 4 documented experiments, and the
         rationale for stopping hyperparameter search are in the
@@ -155,9 +154,7 @@ st.markdown('<div class="hero-title">Summarization: fine-tuned vs. specialist</d
 st.markdown(
     '<div class="hero-subtitle">'
     'A news article goes through two models side by side — a BART-base I fine-tuned '
-    'myself, and Pegasus, pretrained specifically for this task. Same input, same '
-    'decoding settings, different training history.'
-    '</div>',
+    'myself on 20k CNN/DailyMail examples, and a Pegasus model trained by Google on 600k+ news articles. ' ,
     unsafe_allow_html=True,
 )
 
