@@ -25,8 +25,6 @@ Fine-tuned BART beats the extractive baseline on every metric and is competitive
 
 **Live app:** a Streamlit interface where a pasted article is summarized by the fine-tuned BART model, with adjustable generation controls (max length, beam width) and two built-in example articles for quick testing.
 
-**Pegasus is evaluated throughout this project but is not part of the deployed app.** `google/pegasus-cnn_dailymail` uses a SentencePiece-based tokenizer that fails to convert on Streamlit Community Cloud's current Python 3.14 / `transformers` environment (`tiktoken`-based fast-tokenizer conversion raises a `ValueError` specific to that platform — reproducible, not intermittent). Rather than pin an older `transformers` version across the whole app to work around one model's tokenizer and risk destabilizing BART inference in the process, I shipped BART-only to the live demo and kept the full BART/Pegasus/T5 comparison in the documented evaluation results above, computed separately on Kaggle/Colab where this conflict doesn't occur. This is a deliberate scope decision, not an oversight — see the engineering log below for the debugging path that led to it.
-
 **Stack:** Streamlit (UI) · Hugging Face Hub (model hosting) · GitHub (CI: push → auto-redeploy)
 
 ---
@@ -54,13 +52,6 @@ project/
 
 No hyperparameter is hardcoded anywhere in the codebase — every experiment is fully reproducible from its config file alone.
 
----
-
-## Data & Baseline
-
-**Dataset:** `abisee/cnn_dailymail` v3.0.0 — 287k train / 13k val / 11k test. Articles average 615 words; ~5% exceed BART's 1,024-token input limit and get truncated (documented limitation, not silently ignored). A 2,000-example quality check found 0 degenerate reference summaries — no cleaning step was needed, a conclusion based on evidence rather than assumption.
-
-**Baseline (TextRank, extractive, non-neural):** built first, deliberately, as a control group — the question it answers is "does fine-tuning actually beat a free algorithm with zero training?" ROUGE-1: 0.30 / ROUGE-2: 0.12 / ROUGE-L: 0.26.
 
 <details>
 <summary><strong>Full experiment log — 4 training runs (click to expand)</strong></summary>
